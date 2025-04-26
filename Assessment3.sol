@@ -663,7 +663,7 @@ contract AidTokenHandler {
 //  - That the prefix of the DID matches (e.g., "transporter-").
 //  - That the location of the address matches the location inputted when assigning (require(keccak256(...))).
 // Only if all of these validations pass do you allow the AidToken to be assigned to the tokenId.
-Once the AidToken is assigned, you store the location into the AidTokenData struct for that tokenId.
+// Once the AidToken is assigned, you store the location into the AidTokenData struct for that tokenId.
 
 //In the AidTokenHandler contract:
 //When moving through the delivery stages (authenticateTransferTeam, authenticateGroundRelief, claimAid):
