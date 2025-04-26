@@ -34,10 +34,12 @@ contract DIDRegistry {
         Recipient
     }
 
+
     //Struct to store the DID string and role for each address
     struct DIDInfo {
         string did; //Unique DID string associated with the address (e.g., "transporter-0xABC123
         Role role; //Role asscoiated with this address (Transporter, GroundRelief, or Recipient)
+        string location; //Human-readable location (e.g., "Fiji", "Port Moresby")
     }
 
     //mapping from address to its DID information (Forward lookup)
@@ -62,7 +64,8 @@ contract DIDRegistry {
     function internalRegisterDID(
         address user,
         string memory roleString,
-        Role _role
+        Role _role,
+        string memory _location
     ) internal {
         //Ensure a valid (non-zero) address. Preventing invalid entries
         require(user != address(0), "Invalid address");
@@ -90,7 +93,7 @@ contract DIDRegistry {
 
         //Store the DID and role in the mapping for foward lookup.
         //DIDInfo struct is saved using the user address as the key
-        dids[user] = DIDInfo(autoDID, _role);
+        dids[user] = DIDInfo(autoDID, _role, _location);
 
         //Store the same DID string in reverse-lookup mapping to retrieve the address by DID string
         //This allows querying the address from just the DID.
@@ -110,20 +113,20 @@ contract DIDRegistry {
     //Public function to register a user as a Transporter.
     //Calls the internal registration logic with the appropirate prefix and role.
     //The parameter user is the address being registered as a transporter.
-    function registerTransporterDID(address user) public {
-        internalRegisterDID(user, "transporter-", Role.Transporter);
+    function registerTransporterDID(address user, string memory location) public {
+        internalRegisterDID(user, "transporter-", Role.Transporter, location);
     }
 
     //Public function to register a user as a Ground Relief team member.
     //parameter is the user address being registered as ground relief.
-    function registerGroundReliefDID(address user) public {
-        internalRegisterDID(user, "groundrelief-", Role.GroundRelief);
+    function registerGroundReliefDID(address user, string memory location) public {
+        internalRegisterDID(user, "groundrelief-", Role.GroundRelief, location);
     }
 
     //Public function to register a user as a recipient.
     //The parameter is the user address being registered as a recipient
-    function registerRecipientDID(address user) public {
-        internalRegisterDID(user, "recipient-", Role.Recipient);
+    function registerRecipientDID(address user, string memory location) public {
+        internalRegisterDID(user, "recipient-", Role.Recipient, location);
     }
 
     //View function to return the role assigned to a specific address.
@@ -134,6 +137,10 @@ contract DIDRegistry {
     //is being assigned to that position
     function getRole(address user) public view returns (Role) {
         return dids[user].role;
+    }
+
+    function getLocation(address user) public view returns (string memory) {
+        return dids[user].location;
     }
 
     //=====================================================
@@ -242,19 +249,6 @@ contract DIDRegistry {
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 //Main contract to manage aid tokens based on donor contributions
 contract AidToken {
 
@@ -285,6 +279,7 @@ contract AidToken {
         address recipient;        //Final recipient of the aid
         bool isIssued;
         bool isAssigned;            //Tells us if is has passed the 500 threshold and can be deemed a token
+        string location;
     }
 
     //Mapping from token ID to aid token data 
@@ -403,7 +398,8 @@ contract AidToken {
     uint256 tokenId,
     address transferAddress,
     address groundAddress,
-    address recipientAddress
+    address recipientAddress,
+    string memory location
     ) external onlyReliefAgency {
         //Ensure the token ID exists (i.e., has been created previously).
         require(tokenId < tokenIdCounter, "Token ID does not exist");
@@ -432,6 +428,20 @@ contract AidToken {
         require(didRegistry.validateDIDPrefix(groundAddress, "groundrelief-"), "Ground relief DID prefix mismatch");
         require(didRegistry.validateDIDPrefix(recipientAddress, "recipient-"), "Recipient DID prefix mismatch");
 
+        //This line ensures that the location provided when assigning the transfer team matches the location
+        //that was originally registered for the transferAddress in the DIDRegistry contract.
+
+        //Explanation step-by-step:
+        //1. 'didRegistry.getLocation(transferAddress)' fetches the location string registered for the transfer team.
+        //2. 'bytes(...)' converts both strings into byte arrays, since strings in Solidity can't be directly compared.
+        //3. 'keccak256(...)' hashes both byte arrays into 32-byte values.
+        // This hashing allows us to do a reliable equality check, even if the strings are of different lengths.
+        //4. The comparison (==) checks if the hashed values of the two strings are equal.
+        //5. If they are not equal, the transaction is reverted with the error message:
+        //        "Transfer team location mismatch"
+        require(keccak256(bytes(didRegistry.getLocation(transferAddress))) == keccak256(bytes(location)), "Transfer team location mismatch");
+        require(keccak256(bytes(didRegistry.getLocation(groundAddress))) == keccak256(bytes(location)), "Ground Relief location mismatch");
+        require(keccak256(bytes(didRegistry.getLocation(recipientAddress))) == keccak256(bytes(location)), "Recipient location mismatch");
         //Assign verified addresses to the aid token's metadata
         aidTokens[tokenId].transferTeam = transferAddress;
         aidTokens[tokenId].groundRelief = groundAddress;
@@ -439,6 +449,8 @@ contract AidToken {
 
         //Flag the token as having completed recipient assignment to prevent re-assignment
         aidTokens[tokenId].isAssigned = true;
+        
+        aidTokens[tokenId].location = location;
     }
 
 
@@ -536,6 +548,10 @@ contract AidTokenHandler {
         //So from now on whenever we use AidTokenContract, we are directly talking to the
         //AidToken contract as the specificed address of that contract
     }
+
+	// I do not believe in the AidTokenHandler contract that the user needs to authenticate
+	// Its location again, they only need to rely on the token Id and have to be logged into 
+	// their address when inputting the token Id. 
 
     //Function for the transfer team to authenticate and update the aid status to "InTransit"
     function authenticateTransferTeam(uint256 tokenId) public {
@@ -638,3 +654,27 @@ contract AidTokenHandler {
 //You can assign stakeholders to that token ID, but they cannot authenticate themselves 
 //until the token is officially issued. This prevents incomplete or underfunded tokens 
 //from moving through the aid process - which makes sense for auditability and security.
+
+
+//Location Stuff Explained/Validation stuff
+//When a user registers in the DIDRegistry, they assign a location (e.g., "PNG", "FIJI", etc.).
+//In the AidToken contract's assignAidRecipients function, you already validate:
+//  - That the address has the correct role (transporter, ground relief, or recipient)
+//  - That the prefix of the DID matches (e.g., "transporter-").
+//  - That the location of the address matches the location inputted when assigning (require(keccak256(...))).
+// Only if all of these validations pass do you allow the AidToken to be assigned to the tokenId.
+Once the AidToken is assigned, you store the location into the AidTokenData struct for that tokenId.
+
+//In the AidTokenHandler contract:
+//When moving through the delivery stages (authenticateTransferTeam, authenticateGroundRelief, claimAid):
+//  - You already confirm that the caller's address matches the assigned address from the AidToken struct.
+//  - You enforce correct delivery order: Issued -> InTransit -> Delivered -> Claimed.
+
+//Do you need to re-validate location again in AidTokenHandler?
+//Answer: No, you don't need to validate location again.
+//Why?
+//  - The location check already happened when assigning recipients in the AidToken contract.
+//  - The tokenId itself is already attached to the correct location.
+//  - When verifying and updating delivery status (in the Handler contract), you are only checking that the right 
+//    address is acting at the right time.
+//  - Adding another location check would just waste gas and unnecessarily complicate things.
