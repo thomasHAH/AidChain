@@ -1,0 +1,277 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    padding-top: 20px;
+    background-color: #f8f9fa;
+}
+
+.container {
+    background-color: white;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+
+.card {
+    margin-bottom: 20px;
+    border: none;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.card-header {
+    background-color: #4a89dc;
+    color: white;
+    font-weight: bold;
+}
+
+.btn-primary {
+    background-color: #4a89dc;
+    border-color: #4a89dc;
+}
+
+.btn-success {
+    background-color: #37bc9b;
+    border-color: #37bc9b;
+}
+
+.btn-info {
+    background-color: #3bafda;
+    border-color: #3bafda;
+}
+
+.btn-warning {
+    background-color: #f6bb42;
+    border-color: #f6bb42;
+}
+
+.btn-danger {
+    background-color: #da4453;
+    border-color: #da4453;
+}
+
+.form-control:focus {
+    border-color: #4a89dc;
+    box-shadow: 0 0 0 0.25rem rgba(74, 137, 220, 0.25);
+}
+
+.nav-tabs .nav-link.active {
+    border-bottom: 3px solid #4a89dc;
+    font-weight: bold;
+}
+
+.alert {
+    margin-top: 10px;
+}
+
+#statusContainer div {
+    margin-bottom: 10px;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.address-display {
+    font-family: monospace;
+    padding: 5px;
+    border-radius: 3px;
+    word-break: break-all;
+}
+
+.table td, .table th {
+    vertical-align: middle;
+}
+
+.account-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.account-item .account-address {
+    font-family: monospace;
+    font-size: 0.9rem;
+}
+
+.account-item .account-balance {
+    font-size: 0.9rem;
+    font-weight: bold;
+}
+
+.account-item.active {
+    background-color: #e8f4ff;
+    border-left: 4px solid #4a89dc;
+}
+
+.account-actions {
+    display: flex;
+    gap: 5px;
+}
+
+/* Network Badge Styles */
+.network-badge {
+    display: inline-block;
+    padding: 3px 8px;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    font-weight: bold;
+    margin-left: 8px;
+}
+
+.network-mainnet {
+    background-color: #28a745;
+    color: white;
+}
+
+.network-testnet {
+    background-color: #f6bb42;
+    color: #333;
+}
+
+.network-local {
+    background-color: #3bafda;
+    color: white;
+}
+
+.network-unknown {
+    background-color: #da4453;
+    color: white;
+}
+
+/* Role Badge Styles */
+.role-badge {
+    display: inline-block;
+    padding: 3px 8px;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    font-weight: bold;
+    margin-left: 8px;
+}
+
+.role-transporter {
+    background-color: #4a89dc;
+    color: white;
+}
+
+.role-groundrelief {
+    background-color: #3bafda;
+    color: white;
+}
+
+.role-recipient {
+    background-color: #37bc9b;
+    color: white;
+}
+
+.role-reliefagency {
+    background-color: #8cc152;
+    color: white;
+}
+
+.role-none {
+    background-color: #aab2bd;
+    color: white;
+}
+
+/* Aid Status Visualization */
+#aidJourney {
+    margin-top: 20px;
+}
+
+.step-circle {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+
+.step-line {
+    height: 2px;
+    flex-grow: 1;
+    transition: background-color 0.3s ease;
+}
+
+.step-active {
+    background-color: #37bc9b;
+    color: white;
+}
+
+.step-inactive {
+    background-color: #aab2bd;
+    color: white;
+}
+
+/* Custom tooltip */
+.tooltip-inner {
+    max-width: 300px;
+    text-align: left;
+    padding: 10px;
+    font-size: 0.9rem;
+    background-color: #4a5568;
+}
+
+/* Notifications */
+.notification {
+    animation: fadeIn 0.3s ease, fadeOut 0.5s ease 4.5s;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeOut {
+    from { opacity: 1; transform: translateY(0); }
+    to { opacity: 0; transform: translateY(-20px); }
+}
+
+/* Account Badge */
+.account-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    background-color: #e2e8f0;
+}
+
+.account-badge .badge-icon {
+    margin-right: 5px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+}
+
+.account-badge.primary .badge-icon {
+    background-color: #4a89dc;
+}
+
+.account-badge.secondary .badge-icon {
+    background-color: #aab2bd;
+}
+
+/* Loading spinner */
+.spinner-border-sm {
+    width: 1rem;
+    height: 1rem;
+    border-width: 0.2em;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .container {
+        padding: 10px;
+    }
+    
+    .address-display {
+        font-size: 0.8rem;
+    }
+    
+    #aidJourney .step-circle {
+        width: 40px;
+        height: 40px;
+        font-size: 0.8rem;
+    }
+}
