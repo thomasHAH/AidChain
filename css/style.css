@@ -275,3 +275,394 @@ body {
         font-size: 0.8rem;
     }
 }
+
+/* Role Based UI */
+.role-based-section {
+    transition: all 0.3s ease-in-out;
+}
+
+/* Token Status Styles */
+.token-status-table {
+    margin-top: 15px;
+}
+
+.token-status-badge {
+    padding: 5px 10px;
+    border-radius: 15px;
+    font-size: 0.8rem;
+    font-weight: bold;
+}
+
+.status-issued {
+    color: #4a89dc;
+}
+
+.status-intransit {
+    color: #f6bb42;
+}
+
+.status-delivered {
+    color: #3bafda;
+}
+
+.status-claimed {
+    color: #37bc9b;
+}
+
+/* Batch Token Status Section */
+#tokenStatusesSection {
+    animation: slideDown 0.3s ease-in-out;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Initialize Token Button */
+#initializeTokenStatus {
+    margin-bottom: 10px;
+    background-color: #8cc152;
+    border-color: #8cc152;
+}
+
+#initializeTokenStatus:hover {
+    background-color: #7cb33f;
+    border-color: #7cb33f;
+}
+
+/* Role specific action buttons */
+#markInTransit, #markDelivered, #markClaimed {
+    transition: all 0.3s ease;
+}
+
+#batchCheckStatuses {
+    width: 100%;
+}
+
+/* Action buttons in token status table */
+.view-token-details {
+    font-size: 0.8rem;
+    padding: 2px 8px;
+}
+
+/* Relief Agency specific styles */
+.relief-agency-only {
+    display: none;
+}
+
+/* Token Selector Styles */
+#tokenSelectorList {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+#tokenSelectorList .card {
+    transition: all 0.3s ease;
+    cursor: pointer;
+    border: 1px solid #e9ecef;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+#tokenSelectorList .card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    border-color: #4a89dc;
+}
+
+#tokenSelectorList .card.selected {
+    border: 2px solid #4a89dc;
+    box-shadow: 0 0 15px rgba(74, 137, 220, 0.5);
+}
+
+#tokenSelectorList .card-title {
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: #4a5568;
+}
+
+#tokenSelectorList .card-body {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+#loadActiveTokens {
+    transition: all 0.3s ease;
+    width: 200px;
+}
+
+#loadActiveTokens:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Token Card Animation */
+#tokenSelectorList .col-md-3 {
+    opacity: 0;
+    animation: fadeInUp 0.3s ease-out forwards;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+/* Token highlight animation */
+@keyframes tokenHighlight {
+    0% { transform: scale(1); box-shadow: 0 0 0 rgba(74, 137, 220, 0); }
+    50% { transform: scale(1.05); box-shadow: 0 0 20px rgba(74, 137, 220, 0.8); }
+    100% { transform: scale(1); box-shadow: 0 0 15px rgba(74, 137, 220, 0.5); }
+}
+
+.token-highlight {
+    animation: tokenHighlight 0.8s ease;
+}
+
+/* Status indicator styles */
+.location-badge {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    padding: 3px 8px;
+    border-radius: 12px;
+    font-size: 0.7rem;
+    font-weight: bold;
+    background-color: #e2e8f0;
+    color: #4a5568;
+    z-index: 1;
+}
+
+/* Smooth scroll into view */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Load more button styles */
+#loadMoreTokens {
+    transition: all 0.3s ease;
+}
+
+#loadMoreTokens:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Location filter styles */
+#locationFilterContainer {
+    transition: opacity 0.3s ease-in-out;
+    max-width: 300px;
+    margin-bottom: 15px;
+}
+
+#locationFilter {
+    min-width: 150px;
+    font-size: 0.9rem;
+    border-color: #cfd4da;
+    border-radius: 6px;
+}
+
+#locationFilter:focus {
+    border-color: #4a89dc;
+    box-shadow: 0 0 0 0.2rem rgba(74, 137, 220, 0.25);
+}
+
+/* Hide batch token status check section */
+#tokenStatusesSection {
+    display: none !important;
+}
+
+/* Assignment token selector styles */
+#assignmentTokenList .card {
+    transition: all 0.3s ease;
+    cursor: pointer;
+    border: 1px solid #e9ecef;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+#assignmentTokenList .card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    border-color: #4a89dc;
+}
+
+#assignmentTokenList .card.selected {
+    border: 2px solid #4a89dc;
+    box-shadow: 0 0 15px rgba(74, 137, 220, 0.5);
+}
+
+#tokenFilterContainer {
+    transition: opacity 0.3s ease;
+    max-width: 300px;
+    margin-bottom: 15px;
+}
+
+#assignmentTokenFilter {
+    min-width: 200px;
+    font-size: 0.9rem;
+    border-color: #cfd4da;
+    border-radius: 6px;
+}
+
+#assignmentTokenFilter:focus {
+    border-color: #4a89dc;
+    box-shadow: 0 0 0 0.2rem rgba(74, 137, 220, 0.25);
+}
+
+#browsePendingTokens {
+    transition: all 0.3s ease;
+    width: 200px;
+}
+
+#browsePendingTokens:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+#assignmentTokenList .token-badge {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 0.7rem;
+    padding: 3px 8px;
+    border-radius: 12px;
+}
+
+#assignmentTokenList .badge-unassigned {
+    background-color: #f6bb42;
+    color: #333;
+}
+
+#assignmentTokenList .badge-assigned {
+    background-color: #37bc9b;
+    color: white;
+}
+
+#assignmentFormContainer {
+    background-color: #f8f9fa;
+    border-radius: 10px;
+    padding: 20px;
+    margin-top: 20px;
+    border: 1px solid #e9ecef;
+    transition: all 0.3s ease;
+}
+
+/* Assignment form animation */
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+#assignmentFormContainer.animate {
+    animation: slideDown 0.3s ease-out;
+}
+
+/* Assignment token card animation */
+#assignmentTokenList .col-md-3 {
+    opacity: 0;
+    animation: fadeInUp 0.3s ease-out forwards;
+}
+
+/* Read-only form styles for assigned tokens */
+input[readonly].form-control {
+    background-color: #f8f9fa;
+    border-color: #e9ecef;
+    color: #6c757d;
+    cursor: not-allowed;
+}
+
+.btn:disabled {
+    cursor: not-allowed;
+    opacity: 0.65;
+}
+
+#assignmentFormContainer.read-only {
+    background-color: #f8f9fa;
+    border-color: #e9ecef;
+}
+
+/* Emphasize that assigned tokens cannot be modified */
+#assignmentFormContainer.read-only::before {
+    content: "This token assignment cannot be modified";
+    display: block;
+    color: #856404;
+    background-color: #fff3cd;
+    border: 1px solid #ffeeba;
+    border-radius: 5px;
+    padding: 8px 12px;
+    margin-bottom: 15px;
+    font-weight: 500;
+}
+
+/* Role-based visibility styles */
+.role-required-alert {
+    margin: 20px auto;
+    max-width: 600px;
+    text-align: center;
+    padding: 30px;
+    border-radius: 10px;
+    background-color: #f8f9fa;
+    border: 1px solid #e9ecef;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+.role-required-alert h4 {
+    color: #856404;
+    margin-bottom: 15px;
+}
+
+.role-required-alert .role-badge {
+    font-size: 1rem;
+    padding: 5px 10px;
+    margin-bottom: 15px;
+    display: inline-block;
+}
+
+.hidden-tab {
+    display: none !important;
+}
+
+/* Tab transition effect */
+.nav-tabs .nav-link {
+    transition: all 0.3s ease;
+}
+
+.nav-tabs .nav-link[style*="display: none"] + .nav-link {
+    margin-left: 0;
+}
+
+/* Transition effect for token selector */
+#tokenSelectorSection {
+    transition: opacity 0.3s ease-in-out;
+}
+
+/* Hide button styles */
+#hideTokens {
+    transition: all 0.2s ease;
+}
+
+#hideTokens:hover {
+    background-color: #e2e6ea;
+    border-color: #dae0e5;
+}
