@@ -10,7 +10,8 @@
     "build": "webpack --mode production",
     "dev": "webpack serve --mode development",
     "lint:sol": "solhint 'AidChain.sol'",
-    "deploy": "hardhat run scripts/deploy.js --network goerli"
+    "deploy": "hardhat run scripts/deploy.js --network goerli",
+    "audit:fix": "npm audit fix"
   },
   "dependencies": {
     "ethers": "^5.7.2",
@@ -25,6 +26,7 @@
     "axios": "^1.6.2",
     "chai": "^4.3.7",
     "ethereum-waffle": "^4.0.10",
+    "ganache-cli": "^6.12.2",
     "ganache": "^7.9.1",
     "glob": "^10.3.10",
     "hardhat": "^2.19.4",
@@ -44,7 +46,27 @@
     "request": "npm:axios@^1.6.2",
     "glob": "^10.3.10",
     "rimraf": "^5.0.5",
-    "uuid": "^9.0.1"
+    "uuid": "^9.0.1",
+    "abstract-leveldown": "npm:abstract-level@^1.0.3",
+    "level-errors": "npm:abstract-level@^1.0.3",
+    "level-concat-iterator": "npm:abstract-level@^1.0.3",
+    "deferred-leveldown": "npm:abstract-level@^1.0.3",
+    "memdown": "npm:memory-level@^1.0.0",
+    "encoding-down": "npm:abstract-level@^1.0.3",
+    "level-codec": "npm:level-transcoder@^1.0.1",
+    "level-packager": "npm:abstract-level@^1.0.3",
+    "levelup": "npm:abstract-level@^1.0.3",
+    "level-mem": "npm:memory-level@^1.0.0",
+    "testrpc": "npm:ganache-cli@^6.12.2",
+    "@ensdomains/ens": "npm:@ensdomains/ens-contracts@^0.0.22",
+    "@ensdomains/resolver": "npm:@ensdomains/ens-contracts@^0.0.22"
+  },
+  "resolutions": {
+    "abstract-leveldown": "npm:abstract-level@^1.0.3",
+    "level-*": "npm:abstract-level@^1.0.3",
+    "@ensdomains/ens": "npm:@ensdomains/ens-contracts@^0.0.22",
+    "@ensdomains/resolver": "npm:@ensdomains/ens-contracts@^0.0.22",
+    "testrpc": "npm:ganache-cli@^6.12.2"
   },
   "engines": {
     "node": ">=18",
