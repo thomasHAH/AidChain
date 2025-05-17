@@ -16,10 +16,37 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: '18'
-          cache: 'npm' 
+      
+      - name: Generate lockfile if needed
+        run: |
+          if [ ! -f package-lock.json ]; then
+            echo "Generating package-lock.json file"
+            npm install --package-lock-only
+          fi
+      
+      - name: Cache node modules
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
           
       - name: Install dependencies
         run: npm install
+        
+      - name: Create .solhint.json if missing
+        run: |
+          if [ ! -f .solhint.json ]; then
+            echo "Creating .solhint.json file"
+            echo '{
+              "extends": "solhint:recommended",
+              "rules": {
+                "compiler-version": ["error", "^0.8.0"],
+                "func-visibility": ["warn", {"ignoreConstructors": true}]
+              }
+            }' > .solhint.json
+          fi
         
       - name: Install Solhint
         run: npm install -g solhint
