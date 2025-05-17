@@ -32,8 +32,8 @@ jobs:
           mkdir -p contracts
           cp AidChain.sol contracts/
           
-      - name: Run Hardhat tests with verbose output
-        run: npx hardhat test --verbose
+      - name: Run Backend Tests
+        run: npm run test:backend
         
       - name: Show contract compilation info
         run: |

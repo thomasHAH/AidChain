@@ -5,6 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "hardhat test",
+    "test:backend": "hardhat test test/backend-test.js",
+    "test:frontend": "hardhat test test/frontend-test.js",
     "build": "webpack --mode production",
     "dev": "webpack serve --mode development",
     "lint:sol": "solhint 'AidChain.sol'",
@@ -26,6 +28,7 @@
     "ganache": "^7.9.1",
     "glob": "^10.3.10",
     "hardhat": "^2.19.4",
+    "jsdom": "^22.1.0",
     "level-transcoder": "^1.0.1",
     "lru-cache": "^10.1.0",
     "memory-level": "^1.0.0",
