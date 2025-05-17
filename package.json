@@ -11,10 +11,11 @@
     "dev": "webpack serve --mode development",
     "lint:sol": "solhint 'AidChain.sol'",
     "deploy": "hardhat run scripts/deploy.js --network goerli",
-    "audit:fix": "npm audit fix"
+    "audit:fix": "npm audit fix",
+    "install:no-warnings": "npm install --no-fund --no-audit --loglevel=error --legacy-peer-deps"
   },
   "dependencies": {
-    "ethers": "^5.7.2",
+    "ethers": "5.7.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
@@ -59,14 +60,16 @@
     "level-mem": "npm:memory-level@^1.0.0",
     "testrpc": "npm:ganache-cli@^6.12.2",
     "@ensdomains/ens": "npm:@ensdomains/ens-contracts@^0.0.22",
-    "@ensdomains/resolver": "npm:@ensdomains/ens-contracts@^0.0.22"
+    "@ensdomains/resolver": "npm:@ensdomains/ens-contracts@^0.0.22",
+    "ethers": "5.7.0"
   },
   "resolutions": {
     "abstract-leveldown": "npm:abstract-level@^1.0.3",
     "level-*": "npm:abstract-level@^1.0.3",
     "@ensdomains/ens": "npm:@ensdomains/ens-contracts@^0.0.22",
     "@ensdomains/resolver": "npm:@ensdomains/ens-contracts@^0.0.22",
-    "testrpc": "npm:ganache-cli@^6.12.2"
+    "testrpc": "npm:ganache-cli@^6.12.2",
+    "ethers": "5.7.0"
   },
   "engines": {
     "node": ">=18",
