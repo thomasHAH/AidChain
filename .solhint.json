@@ -6,6 +6,9 @@
     "no-empty-blocks": "off",
     "not-rely-on-time": "off",
     "no-inline-assembly": "off",
-    "avoid-low-level-calls": "off"
+    "avoid-low-level-calls": "off",
+    "one-contract-per-file": "off",
+    "reason-string": "off",
+    "gas-custom-errors": "off"
   }
 } 
