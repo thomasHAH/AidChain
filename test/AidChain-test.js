@@ -16,7 +16,7 @@ describe("AidChain Contracts", function () {
     
     // Deploy DIDRegistry
     const DIDRegistry = await ethers.getContractFactory("DIDRegistry");
-    didRegistry = await DIDRegistry.deploy();
+    didRegistry = await DIDRegistry.deploy(owner.address);
     await didRegistry.deployed();
     
     // Deploy AidToken with DIDRegistry address
