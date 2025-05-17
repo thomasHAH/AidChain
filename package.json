@@ -20,6 +20,7 @@
     "@nomiclabs/hardhat-ethers": "^2.2.3",
     "@nomiclabs/hardhat-waffle": "^2.0.6",
     "abstract-level": "^1.0.3",
+    "axios": "^1.6.2",
     "chai": "^4.3.7",
     "ethereum-waffle": "^4.0.10",
     "ganache": "^7.9.1",
@@ -37,7 +38,7 @@
   },
   "overrides": {
     "ethereumjs-abi": "npm:@ethersproject/abi@^5.7.0",
-    "request": "npm:undici-shim@^5.28.2",
+    "request": "npm:axios@^1.6.2",
     "glob": "^10.3.10",
     "rimraf": "^5.0.5",
     "uuid": "^9.0.1"
