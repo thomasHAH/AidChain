@@ -15,39 +15,32 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '16'
+          node-version: '18'
           
       - name: Install dependencies
         run: npm install
+        
+      - name: Install Solhint
+        run: npm install -g solhint
         
       - name: Lint Solidity
-        run: npx solhint 'AidChain.sol'
+        run: solhint 'AidChain.sol' -f table
         
-      - name: Test smart contracts
-        run: npx hardhat test
-        
-  deploy:
-    needs: test
-    if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '16'
+      - name: Setup Hardhat environment
+        run: |
+          npm install --save-dev hardhat @nomiclabs/hardhat-waffle @nomiclabs/hardhat-ethers ethereum-waffle ethers chai
+          mkdir -p contracts
+          cp AidChain.sol contracts/
           
-      - name: Install dependencies
-        run: npm install
+      - name: Run Hardhat tests with verbose output
+        run: npx hardhat test --verbose
         
-      - name: Build frontend
-        run: npm run build
-        
-      - name: Deploy to Vercel
-        uses: amondnet/vercel-action@v20
-        with:
-          vercel-token: ${{ secrets.VERCEL_TOKEN }}
-          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
-          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
-          vercel-args: '--prod' 
+      - name: Show contract compilation info
+        run: |
+          echo "=== Contract Information ==="
+          echo "Showing available contracts:"
+          npx hardhat compile --show-stack-traces
+          echo "=== End Contract Information ==="
+          
+      - name: Notify test completion
+        run: echo "All tests passed! Vercel will handle the deployment automatically." 
