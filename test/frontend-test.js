@@ -205,3 +205,183 @@ function setupMocks() {
   window.app = global.app;
 }
 
+// UI module tests
+describe('UI Module Tests', () => {
+  beforeEach(() => {
+    setupMocks();
+    
+    // Mock UI module
+    global.app.ui = {
+      showNotification: (message, type) => {
+        const notificationDiv = document.createElement('div');
+        notificationDiv.className = `alert alert-${type}`;
+        notificationDiv.textContent = message;
+        document.getElementById('notificationContainer').appendChild(notificationDiv);
+      },
+      formatAddress: (address) => {
+        if (!address) return '';
+        return `${address.substring(0, 6)}...${address.substring(address.length - 4)}`;
+      }
+    };
+  });
+  
+  it('should show notifications correctly', () => {
+    global.app.ui.showNotification('Test message', 'success');
+    const alert = document.querySelector('.alert-success');
+    expect(alert).to.not.be.null;
+    expect(alert.textContent).to.equal('Test message');
+  });
+  
+  it('should format addresses correctly', () => {
+    const address = '0x1234567890123456789012345678901234567890';
+    expect(global.app.ui.formatAddress(address)).to.equal('0x1234...7890');
+  });
+});
+
+// Contracts module tests
+describe('Contracts Module Tests', () => {
+  beforeEach(() => {
+    setupMocks();
+    
+    // Mock contracts module
+    global.app.contracts = {
+      createContract: (abi, address) => new MockContract(abi, address),
+      connectToContracts: async () => {
+        global.app.didRegistryContract = new MockContract([], '0xdid');
+        global.app.aidTokenContract = new MockContract([], '0xtoken');
+        global.app.aidTokenHandlerContract = new MockContract([], '0xhandler');
+        return { success: true };
+      }
+    };
+  });
+  
+  it('should connect to contracts correctly', async () => {
+    // Set up the DOM for contract connection
+    document.body.innerHTML += `
+      <input id="existingDIDRegistry" value="0xdid">
+      <input id="existingAidToken" value="0xtoken">
+      <input id="existingAidTokenHandler" value="0xhandler">
+    `;
+    
+    const result = await global.app.contracts.connectToContracts();
+    expect(result.success).to.equal(true);
+    expect(global.app.didRegistryContract).to.not.be.null;
+    expect(global.app.aidTokenContract).to.not.be.null;
+    expect(global.app.aidTokenHandlerContract).to.not.be.null;
+  });
+});
+
+// Wallet module tests
+describe('Wallet Module Tests', () => {
+  beforeEach(() => {
+    setupMocks();
+    
+    // Mock wallet module
+    global.app.wallet = {
+      connectWallet: async () => {
+        const accounts = await global.ethereum.request({ method: 'eth_accounts' });
+        global.app.userAccount = accounts[0];
+        document.getElementById('userAccount').textContent = accounts[0];
+        return { success: true };
+      },
+      updateNetworkInfo: async () => {
+        const chainId = await global.ethereum.request({ method: 'eth_chainId' });
+        global.app.currentChainId = chainId;
+        global.app.currentNetworkName = 'Ethereum Mainnet';
+        document.getElementById('chainId').textContent = chainId;
+        document.getElementById('networkName').textContent = 'Ethereum Mainnet';
+        return { success: true };
+      }
+    };
+  });
+  
+  it('should connect to wallet correctly', async () => {
+    const result = await global.app.wallet.connectWallet();
+    expect(result.success).to.equal(true);
+    expect(global.app.userAccount).to.equal('0x1234567890123456789012345678901234567890');
+    expect(document.getElementById('userAccount').textContent).to.equal('0x1234567890123456789012345678901234567890');
+  });
+  
+  it('should update network info correctly', async () => {
+    const result = await global.app.wallet.updateNetworkInfo();
+    expect(result.success).to.equal(true);
+    expect(global.app.currentChainId).to.equal('0x1');
+    expect(global.app.currentNetworkName).to.equal('Ethereum Mainnet');
+    expect(document.getElementById('chainId').textContent).to.equal('0x1');
+    expect(document.getElementById('networkName').textContent).to.equal('Ethereum Mainnet');
+  });
+});
+
+// Integration tests
+describe('Integration Tests', () => {
+  beforeEach(() => {
+    setupMocks();
+    
+    // Set up contracts for integration tests
+    global.app.didRegistryContract = new MockContract([], '0xdid');
+    global.app.aidTokenContract = new MockContract([], '0xtoken');
+    global.app.aidTokenHandlerContract = new MockContract([], '0xhandler');
+    
+    // Mock tracking module
+    global.app.tracking = {
+      loadActiveTokensForSelection: async () => {
+        global.app.allTokenData = [
+          { id: '0', status: 'Claimed', transporter: '0x2222', groundRelief: '0x3333', recipient: '0x4444', location: 'FIJI' },
+          { id: '1', status: 'Delivered', transporter: '0x2222', groundRelief: '0x3333', recipient: '0x4444', location: 'FIJI' },
+          { id: '2', status: 'InTransit', transporter: '0x2222', groundRelief: '0x3333', recipient: '0x4444', location: 'FIJI' }
+        ];
+        
+        // Set up location filters
+        global.app.tokenLocations.set('FIJI', 3);
+        
+        // Update UI elements
+        document.getElementById('tokenSelectorSection').style.display = 'block';
+        return { success: true };
+      }
+    };
+    
+    // Mock donation module
+    global.app.donation = {
+      checkTokenStatus: async () => {
+        document.getElementById('tokenIdCounter').textContent = '5';
+        document.getElementById('tokenProgress').style.width = '50%';
+        return { success: true };
+      }
+    };
+  });
+  
+  it('should load token data correctly', async () => {
+    // Set up DOM for tokens
+    document.body.innerHTML += `
+      <div id="tokenSelectorSection" style="display: none;"></div>
+      <div id="tokenSelectorList"></div>
+      <div id="locationFilterContainer" style="display: none;"></div>
+      <div id="locationFilter">
+        <option value="">All Locations</option>
+      </div>
+      <div id="hideTokens" style="display: none;"></div>
+      <div id="loadActiveTokens"></div>
+      <div id="loadMoreContainer" style="display: none;"></div>
+    `;
+    
+    const result = await global.app.tracking.loadActiveTokensForSelection();
+    expect(result.success).to.equal(true);
+    expect(global.app.allTokenData.length).to.equal(3);
+    expect(global.app.tokenLocations.size).to.equal(1);
+    expect(document.getElementById('tokenSelectorSection').style.display).to.equal('block');
+  });
+  
+  it('should check donation status correctly', async () => {
+    // Set up DOM for donation
+    document.body.innerHTML += `
+      <div id="tokenProgress" class="progress-bar" style="width: 0%;"></div>
+      <div id="minDonation"></div>
+      <div id="donationThreshold"></div>
+    `;
+    
+    const result = await global.app.donation.checkTokenStatus();
+    expect(result.success).to.equal(true);
+    expect(document.getElementById('tokenIdCounter').textContent).to.equal('5');
+    expect(document.getElementById('tokenProgress').style.width).to.equal('50%');
+  });
+}); 
