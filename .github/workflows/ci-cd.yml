@@ -49,6 +49,9 @@ jobs:
           
       - name: Run Backend Tests
         run: npm run test:backend
+
+      - name: Run Frontend Tests
+        run: npm run test:frontend
           
       - name: Notify test completion
         run: echo "All tests passed! Vercel will handle the deployment automatically." 
