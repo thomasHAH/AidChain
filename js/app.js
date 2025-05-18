@@ -39,9 +39,8 @@ window.app = {
     currentAssignmentFilter: 'unassigned' // Current assignment filter
 };
 
-/**
- * Initialize application when DOM is loaded
- */
+// Initialize application when DOM is loaded
+
 document.addEventListener('DOMContentLoaded', function () {
     // Initially hide Hide Tokens button (it will be shown when tokens are loaded)
     document.getElementById('hideTokens').style.display = 'none';
