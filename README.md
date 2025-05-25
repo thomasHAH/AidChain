@@ -1,42 +1,180 @@
-# AidChain
+# AidChain - Blockchain-based Relief Supply Management System
 
-These instructions/comments were extracted from the main code, please refer to that main code comments for step by step analysis
+AidChain is a decentralized application (dApp) built on Ethereum that enables transparent, accountable, and efficient management of humanitarian aid distribution using blockchain technology.
 
+## Overview
 
+AidChain leverages blockchain technology to create a transparent and accountable system for managing humanitarian aid from donors to recipients. The system uses smart contracts to track donations, assign stakeholders, and monitor the aid distribution process.
 
+## Key Features
 
-//*************************************INSTRUCTIONS***************************************
-//1. Deploy the DIDRegistry code first and extract that contract's address
-//2. Add it in the AidToken deployment input along with the Relief agency address then deploy
-//3. Then extract the AidToken contract address and use it for the AidTokenHandler
+- **Decentralized Identity (DID) Management**: Register and verify different stakeholders in the aid distribution process (transporters, ground relief teams, and recipients)
+- **Donation Management**: Accept and track donations with automatic token issuance when donation thresholds are met
+- **Stakeholder Assignment**: Assign appropriate stakeholders to each aid token
+- **Aid Tracking**: Monitor the status of aid distribution from donation to delivery
+- **Transparent Accountability**: All transactions and assignments are recorded on the blockchain for full transparency
 
+## Smart Contracts
 
-//Instructions, so you have to go to a different address put at least 1 eth in the value endpoint
-//and click to donate to add eth into the contract - adding 1 eth will turn it into 3 contracts
-//as the threshold for a token is like 0.32 eth and so then we would be up to the fourth one but it can't
-//be issued until its full
-//Complicated shi so we have to get the contract address of the AidToken Contract and then use
-//it when we are deploying for the second contract AidTokenHandler - that way AidTokenHandler
-//we be able to properly call the functions in AidToken
-//So if there tokenId is 1 and you want to authenticate yourself as the ground relief
-//You have to go onto the Ground Relief address and then type in 1 in the authenticate system
+The project consists of three main smart contracts:
 
+1. **DIDRegistry**: Manages decentralized identities and roles for all stakeholders
+2. **AidToken**: Handles donations and token issuance
+3. **AidTokenHandler**: Manages the aid distribution process and stakeholder authentication
 
-//The stuff below just confused me so i need a reminder of the pain it caused:
-//when you use "At Address" in Remix, you're only telling the IDE "here’s the address 
-//of a deployed contract" — but if that contract wasn’t deployed through your current 
-//project code (or you didn’t import the correct interface), Remix can’t interact 
-//with it properly. Deploying the second contract directly with the correct 
-//AidToken address as its constructor input ensures it’s wired correctly from the start.
+## Technical Stack
 
+- **Blockchain**: Ethereum
+- **Smart Contract Language**: Solidity 0.8.x
+- **Development Framework**: Hardhat
+- **Frontend**: HTML, CSS, JavaScript
+- **Web3 Integration**: Web3.js
+- **Testing**: Hardhat Waffle
 
-//**************************Explanation Stuff******************************
-//There is probably a lot of stuff that should be explained better lol
+## Project Structure
 
-// tokens 0, 1, and 2 are working for stakeholder authentication, but token 3 is not – 
-//and that’s exactly what should happen based on the code. When a new token (e.g., token ID 3)
-//is created during donation but hasn't yet met the donationThreshold (0.32 ETH), 
-//the issueAidToken() function is not called. That means: aidTokens[3].isIssued == false
-//You can assign stakeholders to that token ID, but they cannot authenticate themselves 
-//until the token is officially issued. This prevents incomplete or underfunded tokens 
-//from moving through the aid process - which makes sense for auditability and security.
+```
+AidChain/
+├── AidChain.sol         # Main smart contract file
+├── index.html           # Frontend interface
+├── css/                 # CSS styles
+├── js/                  # JavaScript files
+│   ├── app.js           # Main application logic
+│   ├── wallet.js        # Wallet connection handling
+│   ├── contracts.js     # Contract interaction
+│   ├── registration.js  # DID registration functionality
+│   ├── donation.js      # Donation handling
+│   ├── assignment.js    # Token assignment
+│   ├── tracking.js      # Aid tracking
+│   └── ui.js            # UI updates
+├── test/                # Test files
+│   ├── backend-test.js  # Smart contract tests
+│   └── frontend-test.js # Frontend tests
+└── hardhat.config.js    # Hardhat configuration
+```
+
+## Setup and Installation
+
+### Prerequisites
+
+- Node.js (v18 or higher)
+- npm (v9 or higher)
+- MetaMask or another Web3-compatible wallet
+
+### Installation
+
+1. Clone the repository:
+   ```
+   git clone https://github.com/yourusername/AidChain.git
+   cd AidChain
+   ```
+
+2. Install dependencies:
+   ```
+   npm install
+   ```
+
+3. Compile the smart contracts:
+   ```
+   npx hardhat compile
+   ```
+
+4. Run tests:
+   ```
+   npm test
+   ```
+
+### Deployment
+
+#### Local Development
+
+1. Start a local Hardhat node:
+   ```
+   npx hardhat node
+   ```
+
+2. Deploy the contracts to the local network:
+   ```
+   npx hardhat run scripts/deploy.js --network localhost
+   ```
+
+3. Start the development server:
+   ```
+   npm run dev
+   ```
+
+#### Testnet Deployment
+
+To deploy to the Goerli testnet:
+
+1. Set up your environment variables:
+   ```
+   export GOERLI_URL=your_infura_or_alchemy_url
+   export PRIVATE_KEY=your_wallet_private_key
+   ```
+
+2. Deploy to Goerli:
+   ```
+   npm run deploy
+   ```
+
+## Usage
+
+1. **Contract Setup**: Connect to deployed contracts or deploy new ones
+2. **DID Registration**: Register stakeholders with appropriate roles
+3. **Donation**: Make donations to fund aid tokens
+4. **Token Assignment**: Assign stakeholders to issued aid tokens
+5. **Aid Tracking**: Track the status of aid distribution
+
+## Deployment Order
+
+1. Deploy the DIDRegistry contract first
+2. Use the DIDRegistry address when deploying the AidToken contract
+3. Use the AidToken address when deploying the AidTokenHandler contract
+
+## CI/CD Workflow
+
+This project uses GitHub Actions for continuous integration and continuous deployment. The workflow is configured to:
+
+1. **Run on Push and Pull Requests**: Automatically triggered when code is pushed to main/master branches or when a pull request is created
+2. **Test Environment Setup**: Uses Ubuntu with Node.js 18
+3. **Dependency Management**: Installs and caches npm dependencies
+4. **Code Quality Checks**: Runs Solidity linting with Solhint
+5. **Automated Testing**: Executes both backend (smart contract) and frontend tests
+6. **Deployment**: Vercel handles the automatic deployment after tests pass
+
+## Task Management
+
+AidChain includes a comprehensive task management system for development and maintenance. The project's npm scripts are set up to handle various tasks:
+
+### Development Tasks
+
+- **Development Server**: `npm run dev` - Starts the webpack development server
+- **Production Build**: `npm run build` - Creates a production-ready build using webpack
+
+### Testing Tasks
+
+- **All Tests**: `npm test` - Runs all backend and frontend tests
+- **Backend Tests**: `npm run test:backend` - Runs only smart contract tests
+  - Tests DIDRegistry functionality (role registration, permissions)
+  - Tests AidToken operations (donations, token issuance)
+  - Tests AidTokenHandler processes (claim, transit, delivery verification)
+- **Frontend Tests**: `npm run test:frontend` - Runs frontend component tests
+  - Tests UI components using mocked Web3 and Ethereum providers
+  - Verifies wallet connections and contract interactions
+  - Simulates user flows for donation, registration, and tracking
+
+### Quality Assurance
+
+- **Solidity Linting**: `npm run lint:sol` - Runs Solhint on smart contract code
+- **Security Audit**: `npm run audit:fix` - Runs npm audit and fixes issues when possible
+
+### Deployment Tasks
+
+- **Testnet Deployment**: `npm run deploy` - Deploys contracts to the Goerli testnet
+
+### Special Tasks
+
+- **Clean Install**: `npm run install:no-warnings` - Performs a clean installation without warnings or audit messages
+
+The task system is designed to support the full development lifecycle from local development through testing and deployment to production.
