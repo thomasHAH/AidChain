@@ -31,27 +31,6 @@ The project consists of three main smart contracts:
 - **Web3 Integration**: Web3.js
 - **Testing**: Hardhat Waffle
 
-## Project Structure
-
-```
-AidChain/
-├── AidChain.sol         # Main smart contract file
-├── index.html           # Frontend interface
-├── css/                 # CSS styles
-├── js/                  # JavaScript files
-│   ├── app.js           # Main application logic
-│   ├── wallet.js        # Wallet connection handling
-│   ├── contracts.js     # Contract interaction
-│   ├── registration.js  # DID registration functionality
-│   ├── donation.js      # Donation handling
-│   ├── assignment.js    # Token assignment
-│   ├── tracking.js      # Aid tracking
-│   └── ui.js            # UI updates
-├── test/                # Test files
-│   ├── backend-test.js  # Smart contract tests
-│   └── frontend-test.js # Frontend tests
-└── hardhat.config.js    # Hardhat configuration
-```
 
 ## Setup and Installation
 
@@ -65,7 +44,7 @@ AidChain/
 
 1. Clone the repository:
    ```
-   git clone https://github.com/yourusername/AidChain.git
+   git clone https://github.com/seungjun-Lee0/aid-chain.git
    cd AidChain
    ```
 
@@ -103,21 +82,6 @@ AidChain/
    npm run dev
    ```
 
-#### Testnet Deployment
-
-To deploy to the Goerli testnet:
-
-1. Set up your environment variables:
-   ```
-   export GOERLI_URL=your_infura_or_alchemy_url
-   export PRIVATE_KEY=your_wallet_private_key
-   ```
-
-2. Deploy to Goerli:
-   ```
-   npm run deploy
-   ```
-
 ## Usage
 
 1. **Contract Setup**: Connect to deployed contracts or deploy new ones
@@ -143,15 +107,6 @@ This project uses GitHub Actions for continuous integration and continuous deplo
 5. **Automated Testing**: Executes both backend (smart contract) and frontend tests
 6. **Deployment**: Vercel handles the automatic deployment after tests pass
 
-## Task Management
-
-AidChain includes a comprehensive task management system for development and maintenance. The project's npm scripts are set up to handle various tasks:
-
-### Development Tasks
-
-- **Development Server**: `npm run dev` - Starts the webpack development server
-- **Production Build**: `npm run build` - Creates a production-ready build using webpack
-
 ### Testing Tasks
 
 - **All Tests**: `npm test` - Runs all backend and frontend tests
@@ -172,9 +127,5 @@ AidChain includes a comprehensive task management system for development and mai
 ### Deployment Tasks
 
 - **Testnet Deployment**: `npm run deploy` - Deploys contracts to the Goerli testnet
-
-### Special Tasks
-
-- **Clean Install**: `npm run install:no-warnings` - Performs a clean installation without warnings or audit messages
 
 The task system is designed to support the full development lifecycle from local development through testing and deployment to production.
